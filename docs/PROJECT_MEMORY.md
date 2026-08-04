@@ -139,6 +139,8 @@ As dependências JavaScript exatas estão fixadas em `package-lock.json`; no out
 - Reserva de equipamentos por evento com saída, retorno, folga logística, indicação de conflitos e bloqueio de sobreposição no PostgreSQL.
 - Cancelamento e conclusão liberam a disponibilidade sem apagar o histórico da reserva.
 - Montagem sugere o início do evento 12 horas depois, permitindo ajuste manual para intervalos menores.
+- Geração e impressão de etiquetas QR por equipamento, individual ou em lote.
+- Impressão configurável em folha A4 ou impressora térmica, com padrões 50×30, 60×35, 60×40 e 90×30 mm, além de tamanho personalizado.
 - Migration inicial com clientes, categorias, itens, insumos, eventos, reservas, movimentações e manutenção.
 - Restrição PostgreSQL contra sobreposição de reserva do mesmo Item.
 - Função de status derivado do Item.
