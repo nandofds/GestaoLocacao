@@ -131,6 +131,8 @@ As dependências JavaScript exatas estão fixadas em `package-lock.json`; no out
 - Cadastro real de Clientes com listagem, busca, criação, edição e identificação da empresa.
 - Cadastro real de Categorias e Itens serializados com código/QR próprios, edição e identificação da empresa.
 - Categorias e campos de equipamentos normalizados em maiúsculas, com bloqueio de duplicidade por empresa.
+- Cadastro real de Insumos com categoria, unidade, saldo atual, estoque mínimo, custo unitário e alerta de reposição.
+- Nomes de Insumos normalizados em maiúsculas, com bloqueio de duplicidade por empresa.
 - Migration inicial com clientes, categorias, itens, insumos, eventos, reservas, movimentações e manutenção.
 - Restrição PostgreSQL contra sobreposição de reserva do mesmo Item.
 - Função de status derivado do Item.
@@ -149,15 +151,14 @@ O visual usa navy profundo, branco/cinza frio, verde para normalidade, âmbar pa
 
 ## Próxima sequência de trabalho
 
-1. Implementar cadastro de Insumos com saldo, custo e estoque mínimo.
-2. Implementar cadastro de colaboradores.
-3. Implementar eventos e reserva com disponibilidade real.
-4. Implementar separação, saída e retorno persistidos.
-5. Integrar câmera e leitura real de QR.
-6. Evoluir a fila offline para IndexedDB e sincronização idempotente com Supabase.
-7. Implementar manutenção e auditoria completas.
-8. Configurar variáveis e publicar na Vercel.
-9. **Último passo antes da produção:** configurar SMTP próprio no Supabase, desativar o `mailer_autoconfirm` usado durante o desenvolvimento, reativar a confirmação de e-mail e validar cadastro, confirmação e recuperação de senha. O provedor padrão do Supabase não deve ser usado em produção por causa do limite reduzido de envios.
+1. Implementar cadastro de colaboradores.
+2. Implementar eventos e reserva com disponibilidade real.
+3. Implementar separação, saída e retorno persistidos.
+4. Integrar câmera e leitura real de QR.
+5. Evoluir a fila offline para IndexedDB e sincronização idempotente com Supabase.
+6. Implementar manutenção e auditoria completas.
+7. Configurar variáveis e publicar na Vercel.
+8. **Último passo antes da produção:** configurar SMTP próprio no Supabase, desativar o `mailer_autoconfirm` usado durante o desenvolvimento, reativar a confirmação de e-mail e validar cadastro, confirmação e recuperação de senha. O provedor padrão do Supabase não deve ser usado em produção por causa do limite reduzido de envios.
 
 ## Fora do MVP inicial
 
