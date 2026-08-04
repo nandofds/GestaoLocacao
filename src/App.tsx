@@ -15,9 +15,10 @@ import { ClientsPage } from './components/ClientsPage'
 import { EquipmentPage } from './components/EquipmentPage'
 import { UserIdentity } from './components/UserIdentity'
 import { SuppliesPage } from './components/SuppliesPage'
+import { CollaboratorsPage } from './components/CollaboratorsPage'
 
 type View = 'dashboard' | 'operation' | 'return' | 'events'
-type DesktopSection = 'Dashboard' | 'Clientes' | 'Equipamentos' | 'Estoque'
+type DesktopSection = 'Dashboard' | 'Clientes' | 'Equipamentos' | 'Estoque' | 'Colaboradores'
 type Tone = 'danger' | 'warning' | 'success' | 'info' | 'neutral'
 type ReturnItem = { code: string; name: string; state: 'missing' | 'ok' | 'damaged' }
 
@@ -38,7 +39,7 @@ function Sidebar({ collapsed, active, onSelect, onToggle }: { collapsed: boolean
     <div className="brand"><span className="brand-mark">L</span><strong>Lume</strong></div>
     <nav aria-label="Navegação principal">
       {nav.map(([label, Icon]) => (
-        <button className={label === active ? 'nav-item nav-item--active' : 'nav-item'} key={label} title={label} onClick={() => { if (label === 'Dashboard' || label === 'Clientes' || label === 'Equipamentos' || label === 'Estoque') onSelect(label) }}>
+        <button className={label === active ? 'nav-item nav-item--active' : 'nav-item'} key={label} title={label} onClick={() => { if (label === 'Dashboard' || label === 'Clientes' || label === 'Equipamentos' || label === 'Estoque' || label === 'Colaboradores') onSelect(label) }}>
           <Icon size={19} /><span>{label}</span>
         </button>
       ))}
@@ -219,7 +220,7 @@ function App() {
 
   return <div className="app-shell"><Sidebar collapsed={collapsed} active={section} onSelect={setSection} onToggle={() => setCollapsed((v) => !v)} />
     <div className="workspace"><header className="topbar"><button className="menu-button" onClick={() => setCollapsed((v) => !v)}><Menu /></button><label className="search"><Search /><input aria-label="Buscar" placeholder="Buscar eventos, clientes, equipamentos..." /></label><div className="topbar-actions"><PlatformAdmin /><button className="operation-link" onClick={() => setView('operation')}><PackageCheck /> App operacional</button><button className="sign-out" aria-label="Sair" title="Sair" onClick={() => void supabase?.auth.signOut()}><LogOut /></button><UserIdentity /></div></header>
-      <main className="content">{section === 'Clientes' ? <ClientsPage /> : section === 'Equipamentos' ? <EquipmentPage /> : section === 'Estoque' ? <SuppliesPage /> : <Dashboard />}</main>
+      <main className="content">{section === 'Clientes' ? <ClientsPage /> : section === 'Equipamentos' ? <EquipmentPage /> : section === 'Estoque' ? <SuppliesPage /> : section === 'Colaboradores' ? <CollaboratorsPage /> : <Dashboard />}</main>
     </div>
   </div>
 }
