@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/data.ts","./src/main.tsx","./src/vite-env.d.ts","./src/components/authgate.tsx","./src/lib/dashboard.ts","./src/lib/offlinequeue.ts","./src/lib/supabase.ts"],"version":"5.7.3"}
+{"root":["./src/app.tsx","./src/data.ts","./src/main.tsx","./src/vite-env.d.ts","./src/components/authgate.tsx","./src/components/platformadmin.tsx","./src/lib/dashboard.ts","./src/lib/offlinequeue.ts","./src/lib/supabase.ts"],"version":"5.7.3"}

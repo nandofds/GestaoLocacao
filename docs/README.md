@@ -7,7 +7,7 @@ Aplicação React/TypeScript com duas superfícies separadas:
 
 ## Executar
 
-Requer Node.js 20 ou superior.
+Requer Node.js 22 LTS ou superior e npm 10 ou superior. As versões atuais do cliente Supabase exigem Node.js 22; Node 20 não é um ambiente suportado para este projeto.
 
 ```bash
 npm install
@@ -19,6 +19,12 @@ Copie `.env.example` para `.env.local` e preencha as credenciais públicas do Su
 ## Banco de dados
 
 A migration inicial está em `supabase/migrations`. Ela preserva as regras centrais: Item e Insumo são naturezas distintas, status de Item é derivado dos fatos e reservas serializadas não podem se sobrepor.
+
+## Multi-tenant
+
+Cada usuário pertence a uma ou mais empresas. Todas as tabelas operacionais são isoladas por `organization_id` e políticas Row Level Security; novos cadastros criam automaticamente a primeira empresa do usuário.
+
+O usuário mais antigo da instalação recebe o papel protegido de administrador da plataforma. Ele pode criar empresas, alternar a empresa ativa e acessar todos os tenants; usuários comuns continuam limitados às empresas das quais são membros.
 
 ## PWA/offline
 
