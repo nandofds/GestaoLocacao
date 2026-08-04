@@ -142,6 +142,10 @@ As dependências JavaScript exatas estão fixadas em `package-lock.json`; no out
 - Geração e impressão de etiquetas QR por equipamento, individual ou em lote.
 - Impressão configurável em folha A4 ou impressora térmica, com padrões 50×30, 60×35, 60×40 e 90×30 mm, além de tamanho personalizado.
 - Separação persistente por evento, com conferência por QR/código, progresso, bloqueio de item fora da reserva, prevenção de duplicidade e opção de desfazer.
+- Separação disponível somente para eventos confirmados ou em andamento, com proteção também no banco.
+- Saída do galpão persistente e transacional, vinculada ao colaborador que liberou os equipamentos e com transporte opcional.
+- Retorno persistente por QR/código, condição por item, conferência completa e colaborador responsável pela entrada no galpão.
+- Retorno danificado abre manutenção automaticamente; extraviados permanecem fora do estoque disponível.
 - Migration inicial com clientes, categorias, itens, insumos, eventos, reservas, movimentações e manutenção.
 - Restrição PostgreSQL contra sobreposição de reserva do mesmo Item.
 - Função de status derivado do Item.
@@ -160,12 +164,11 @@ O visual usa navy profundo, branco/cinza frio, verde para normalidade, âmbar pa
 
 ## Próxima sequência de trabalho
 
-1. Implementar saída e retorno persistidos.
-2. Integrar câmera e leitura real de QR.
-3. Evoluir a fila offline para IndexedDB e sincronização idempotente com Supabase.
-4. Implementar manutenção e auditoria completas.
-5. Configurar variáveis e publicar na Vercel.
-6. **Último passo antes da produção:** configurar SMTP próprio no Supabase, desativar o `mailer_autoconfirm` usado durante o desenvolvimento, reativar a confirmação de e-mail e validar cadastro, confirmação e recuperação de senha. O provedor padrão do Supabase não deve ser usado em produção por causa do limite reduzido de envios.
+1. Integrar câmera e leitura real de QR.
+2. Evoluir a fila offline para IndexedDB e sincronização idempotente com Supabase.
+3. Implementar manutenção e auditoria completas.
+4. Configurar variáveis e publicar na Vercel.
+5. **Último passo antes da produção:** configurar SMTP próprio no Supabase, desativar o `mailer_autoconfirm` usado durante o desenvolvimento, reativar a confirmação de e-mail e validar cadastro, confirmação e recuperação de senha. O provedor padrão do Supabase não deve ser usado em produção por causa do limite reduzido de envios.
 
 ## Fora do MVP inicial
 

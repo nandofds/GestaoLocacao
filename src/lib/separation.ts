@@ -13,7 +13,7 @@ function requireSupabase() { if (!supabase) throw new Error('Supabase não confi
 
 export async function listSeparationEvents(): Promise<RentalEvent[]> {
   const events = await listEvents()
-  return events.filter((event) => !['CANCELADO', 'CONCLUIDO'].includes(event.status))
+  return events.filter((event) => ['CONFIRMADO', 'EM_ANDAMENTO'].includes(event.status))
 }
 
 export async function loadEventSeparation(eventId: string): Promise<SeparationItem[]> {
