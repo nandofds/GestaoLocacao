@@ -124,6 +124,13 @@ As dependências JavaScript exatas estão fixadas em `package-lock.json`; no out
 - Fila offline local versionada em `localStorage`.
 - Service worker, manifesto e ícone PWA.
 - Cliente Supabase condicional por `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`.
+- Projeto Supabase remoto conectado e migrations sincronizadas.
+- Autenticação por e-mail/senha com criação automática de empresa e vínculo `owner`.
+- Administração global da plataforma, troca de empresa ativa e cabeçalho com usuário/empresa reais.
+- RLS multi-tenant validada: usuários comuns isolados e superusuário com visão global.
+- Cadastro real de Clientes com listagem, busca, criação, edição e identificação da empresa.
+- Cadastro real de Categorias e Itens serializados com código/QR próprios, edição e identificação da empresa.
+- Categorias e campos de equipamentos normalizados em maiúsculas, com bloqueio de duplicidade por empresa.
 - Migration inicial com clientes, categorias, itens, insumos, eventos, reservas, movimentações e manutenção.
 - Restrição PostgreSQL contra sobreposição de reserva do mesmo Item.
 - Função de status derivado do Item.
@@ -142,18 +149,15 @@ O visual usa navy profundo, branco/cinza frio, verde para normalidade, âmbar pa
 
 ## Próxima sequência de trabalho
 
-1. Criar ou conectar projeto Supabase.
-2. Aplicar a migration inicial em ambiente de desenvolvimento.
-3. Criar autenticação e perfis de acesso.
-4. Revisar políticas RLS por perfil e adicionar escrita segura.
-5. Trocar dados demonstrativos por consultas reais.
-6. Implementar cadastros de clientes, colaboradores, categorias, Itens e Insumos.
-7. Implementar eventos e reserva com disponibilidade real.
-8. Implementar separação, saída e retorno persistidos.
-9. Integrar câmera e leitura real de QR.
-10. Evoluir a fila offline para IndexedDB e sincronização idempotente com Supabase.
-11. Implementar manutenção e auditoria completas.
-12. Configurar variáveis e publicar na Vercel.
+1. Implementar cadastro de Insumos com saldo, custo e estoque mínimo.
+2. Implementar cadastro de colaboradores.
+3. Implementar eventos e reserva com disponibilidade real.
+4. Implementar separação, saída e retorno persistidos.
+5. Integrar câmera e leitura real de QR.
+6. Evoluir a fila offline para IndexedDB e sincronização idempotente com Supabase.
+7. Implementar manutenção e auditoria completas.
+8. Configurar variáveis e publicar na Vercel.
+9. **Último passo antes da produção:** configurar SMTP próprio no Supabase, desativar o `mailer_autoconfirm` usado durante o desenvolvimento, reativar a confirmação de e-mail e validar cadastro, confirmação e recuperação de senha. O provedor padrão do Supabase não deve ser usado em produção por causa do limite reduzido de envios.
 
 ## Fora do MVP inicial
 
@@ -178,7 +182,8 @@ O teste visual espera o preview em `http://127.0.0.1:4173`.
 
 ## Estado de integrações
 
-- Supabase: biblioteca e schema preparados; projeto/credenciais ainda não conectados.
+- Supabase: projeto remoto conectado, migrations aplicadas e autenticação multi-tenant em teste.
+- Auth/SMTP: `mailer_autoconfirm` está temporariamente ativo no ambiente remoto para permitir testes. SMTP próprio e confirmação de e-mail são pendências obrigatórias do último passo antes da produção.
 - Vercel: ainda não configurada nem publicada.
 - GitHub: repositório já possui remoto e a branch observada é `main`.
 - Dados reais: ainda não disponíveis.

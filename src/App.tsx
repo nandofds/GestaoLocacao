@@ -11,8 +11,12 @@ import { loadDashboard, type DashboardSnapshot } from './lib/dashboard'
 import { clearQueue, enqueue, readQueue } from './lib/offlineQueue'
 import { isSupabaseConfigured, supabase } from './lib/supabase'
 import { PlatformAdmin } from './components/PlatformAdmin'
+import { ClientsPage } from './components/ClientsPage'
+import { EquipmentPage } from './components/EquipmentPage'
+import { UserIdentity } from './components/UserIdentity'
 
 type View = 'dashboard' | 'operation' | 'return' | 'events'
+type DesktopSection = 'Dashboard' | 'Clientes' | 'Equipamentos'
 type Tone = 'danger' | 'warning' | 'success' | 'info' | 'neutral'
 type ReturnItem = { code: string; name: string; state: 'missing' | 'ok' | 'damaged' }
 
@@ -28,12 +32,12 @@ function Status({ tone, children }: { tone: Tone; children: React.ReactNode }) {
   return <span className={`status status--${tone}`}>{children}</span>
 }
 
-function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
+function Sidebar({ collapsed, active, onSelect, onToggle }: { collapsed: boolean; active: DesktopSection; onSelect: (section: DesktopSection) => void; onToggle: () => void }) {
   return <aside className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}>
     <div className="brand"><span className="brand-mark">L</span><strong>Lume</strong></div>
     <nav aria-label="Navegação principal">
-      {nav.map(([label, Icon], index) => (
-        <button className={index === 0 ? 'nav-item nav-item--active' : 'nav-item'} key={label} title={label}>
+      {nav.map(([label, Icon]) => (
+        <button className={label === active ? 'nav-item nav-item--active' : 'nav-item'} key={label} title={label} onClick={() => { if (label === 'Dashboard' || label === 'Clientes' || label === 'Equipamentos') onSelect(label) }}>
           <Icon size={19} /><span>{label}</span>
         </button>
       ))}
@@ -194,6 +198,7 @@ function MyEvents({ setView }: { setView: (v: View) => void }) {
 function App() {
   const [view, setView] = useState<View>(() => window.innerWidth < 760 ? 'operation' : 'dashboard')
   const [collapsed, setCollapsed] = useState(false)
+  const [section, setSection] = useState<DesktopSection>('Dashboard')
   const [online, setOnline] = useState(navigator.onLine)
 
   useEffect(() => {
@@ -211,9 +216,9 @@ function App() {
 
   if (view !== 'dashboard') return <main className="mobile-app">{mobileView}<button className="desktop-switch" onClick={() => setView('dashboard')}>Abrir painel de gestão</button></main>
 
-  return <div className="app-shell"><Sidebar collapsed={collapsed} onToggle={() => setCollapsed((v) => !v)} />
-    <div className="workspace"><header className="topbar"><button className="menu-button" onClick={() => setCollapsed((v) => !v)}><Menu /></button><label className="search"><Search /><input aria-label="Buscar" placeholder="Buscar eventos, clientes, equipamentos..." /></label><div className="topbar-actions"><PlatformAdmin /><button className="operation-link" onClick={() => setView('operation')}><PackageCheck /> App operacional</button><button className="sign-out" aria-label="Sair" title="Sair" onClick={() => void supabase?.auth.signOut()}><LogOut /></button><span className="avatar">LU</span><span className="user"><strong>Usuário Lume</strong><small>Operação autenticada</small></span></div></header>
-      <main className="content"><Dashboard /></main>
+  return <div className="app-shell"><Sidebar collapsed={collapsed} active={section} onSelect={setSection} onToggle={() => setCollapsed((v) => !v)} />
+    <div className="workspace"><header className="topbar"><button className="menu-button" onClick={() => setCollapsed((v) => !v)}><Menu /></button><label className="search"><Search /><input aria-label="Buscar" placeholder="Buscar eventos, clientes, equipamentos..." /></label><div className="topbar-actions"><PlatformAdmin /><button className="operation-link" onClick={() => setView('operation')}><PackageCheck /> App operacional</button><button className="sign-out" aria-label="Sair" title="Sair" onClick={() => void supabase?.auth.signOut()}><LogOut /></button><UserIdentity /></div></header>
+      <main className="content">{section === 'Clientes' ? <ClientsPage /> : section === 'Equipamentos' ? <EquipmentPage /> : <Dashboard />}</main>
     </div>
   </div>
 }
