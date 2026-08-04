@@ -141,6 +141,7 @@ As dependências JavaScript exatas estão fixadas em `package-lock.json`; no out
 - Montagem sugere o início do evento 12 horas depois, permitindo ajuste manual para intervalos menores.
 - Geração e impressão de etiquetas QR por equipamento, individual ou em lote.
 - Impressão configurável em folha A4 ou impressora térmica, com padrões 50×30, 60×35, 60×40 e 90×30 mm, além de tamanho personalizado.
+- Separação persistente por evento, com conferência por QR/código, progresso, bloqueio de item fora da reserva, prevenção de duplicidade e opção de desfazer.
 - Migration inicial com clientes, categorias, itens, insumos, eventos, reservas, movimentações e manutenção.
 - Restrição PostgreSQL contra sobreposição de reserva do mesmo Item.
 - Função de status derivado do Item.
@@ -159,7 +160,7 @@ O visual usa navy profundo, branco/cinza frio, verde para normalidade, âmbar pa
 
 ## Próxima sequência de trabalho
 
-1. Implementar separação, saída e retorno persistidos.
+1. Implementar saída e retorno persistidos.
 2. Integrar câmera e leitura real de QR.
 3. Evoluir a fila offline para IndexedDB e sincronização idempotente com Supabase.
 4. Implementar manutenção e auditoria completas.
