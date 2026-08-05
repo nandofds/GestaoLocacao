@@ -26,6 +26,14 @@ export async function listEvents(): Promise<RentalEvent[]> {
   return ((data ?? []) as unknown as EventRow[]).map(mapEvent)
 }
 
+export async function listAgendaEvents(startAt: string, endAt: string, status?: EventStatus): Promise<RentalEvent[]> {
+  let query = requireSupabase().from('events').select(eventSelect).lte('assembly_at', endAt).gte('disassembly_at', startAt).order('assembly_at')
+  if (status) query = query.eq('status', status)
+  const { data, error } = await query
+  if (error) throw error
+  return ((data ?? []) as unknown as EventRow[]).map(mapEvent)
+}
+
 export async function saveEvent(input: EventInput, id?: string): Promise<RentalEvent> {
   const query = id ? requireSupabase().from('events').update(input).eq('id', id) : requireSupabase().from('events').insert(input)
   const { data, error } = await query.select(eventSelect).single()

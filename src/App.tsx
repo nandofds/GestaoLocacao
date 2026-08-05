@@ -21,9 +21,10 @@ import { SeparationPage } from './components/SeparationPage'
 import { DeparturePage } from './components/DeparturePage'
 import { ReturnPage } from './components/ReturnPage'
 import { MaintenancePage } from './components/MaintenancePage'
+import { AgendaPage } from './components/AgendaPage'
 
 type View = 'dashboard' | 'operation' | 'return' | 'events'
-type DesktopSection = 'Dashboard' | 'Eventos' | 'Clientes' | 'Equipamentos' | 'Estoque' | 'Separação' | 'Saída' | 'Retorno e conferência' | 'Manutenção' | 'Colaboradores'
+type DesktopSection = 'Dashboard' | 'Agenda' | 'Eventos' | 'Clientes' | 'Equipamentos' | 'Estoque' | 'Separação' | 'Saída' | 'Retorno e conferência' | 'Manutenção' | 'Colaboradores'
 type Tone = 'danger' | 'warning' | 'success' | 'info' | 'neutral'
 type ReturnItem = { code: string; name: string; state: 'missing' | 'ok' | 'damaged' }
 
@@ -44,7 +45,7 @@ function Sidebar({ collapsed, active, onSelect, onToggle }: { collapsed: boolean
     <div className="brand"><span className="brand-mark">L</span><strong>Lume</strong></div>
     <nav aria-label="Navegação principal">
       {nav.map(([label, Icon]) => (
-        <button className={label === active ? 'nav-item nav-item--active' : 'nav-item'} key={label} title={label} onClick={() => { if (label === 'Dashboard' || label === 'Eventos' || label === 'Clientes' || label === 'Equipamentos' || label === 'Estoque' || label === 'Separação' || label === 'Saída' || label === 'Retorno e conferência' || label === 'Manutenção' || label === 'Colaboradores') onSelect(label) }}>
+        <button className={label === active ? 'nav-item nav-item--active' : 'nav-item'} key={label} title={label} onClick={() => { if (label === 'Dashboard' || label === 'Agenda' || label === 'Eventos' || label === 'Clientes' || label === 'Equipamentos' || label === 'Estoque' || label === 'Separação' || label === 'Saída' || label === 'Retorno e conferência' || label === 'Manutenção' || label === 'Colaboradores') onSelect(label) }}>
           <Icon size={19} /><span>{label}</span>
         </button>
       ))}
@@ -225,7 +226,7 @@ function App() {
 
   return <div className="app-shell"><Sidebar collapsed={collapsed} active={section} onSelect={setSection} onToggle={() => setCollapsed((v) => !v)} />
     <div className="workspace"><header className="topbar"><button className="menu-button" onClick={() => setCollapsed((v) => !v)}><Menu /></button><label className="search"><Search /><input aria-label="Buscar" placeholder="Buscar eventos, clientes, equipamentos..." /></label><div className="topbar-actions"><PlatformAdmin /><button className="operation-link" onClick={() => setView('operation')}><PackageCheck /> App operacional</button><button className="sign-out" aria-label="Sair" title="Sair" onClick={() => void supabase?.auth.signOut()}><LogOut /></button><UserIdentity /></div></header>
-      <main className="content">{section === 'Eventos' ? <EventsPage /> : section === 'Clientes' ? <ClientsPage /> : section === 'Equipamentos' ? <EquipmentPage /> : section === 'Estoque' ? <SuppliesPage /> : section === 'Separação' ? <SeparationPage /> : section === 'Saída' ? <DeparturePage /> : section === 'Retorno e conferência' ? <ReturnPage /> : section === 'Manutenção' ? <MaintenancePage /> : section === 'Colaboradores' ? <CollaboratorsPage /> : <Dashboard />}</main>
+      <main className="content">{section === 'Agenda' ? <AgendaPage onOpenEvents={() => setSection('Eventos')} /> : section === 'Eventos' ? <EventsPage /> : section === 'Clientes' ? <ClientsPage /> : section === 'Equipamentos' ? <EquipmentPage /> : section === 'Estoque' ? <SuppliesPage /> : section === 'Separação' ? <SeparationPage /> : section === 'Saída' ? <DeparturePage /> : section === 'Retorno e conferência' ? <ReturnPage /> : section === 'Manutenção' ? <MaintenancePage /> : section === 'Colaboradores' ? <CollaboratorsPage /> : <Dashboard />}</main>
     </div>
   </div>
 }
