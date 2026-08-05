@@ -146,6 +146,8 @@ As dependências JavaScript exatas estão fixadas em `package-lock.json`; no out
 - Saída do galpão persistente e transacional, vinculada ao colaborador que liberou os equipamentos e com transporte opcional.
 - Retorno persistente por QR/código, condição por item, conferência completa e colaborador responsável pela entrada no galpão.
 - Retorno danificado abre manutenção automaticamente; extraviados permanecem fora do estoque disponível.
+- Manutenção com responsável técnico, urgência, etapas, custos, diagnóstico, teste, liberação ou baixa sem reparo.
+- Auditoria automática das alterações de manutenção, com status anterior/novo, custo, observação, usuário e horário.
 - Migration inicial com clientes, categorias, itens, insumos, eventos, reservas, movimentações e manutenção.
 - Restrição PostgreSQL contra sobreposição de reserva do mesmo Item.
 - Função de status derivado do Item.
@@ -164,11 +166,10 @@ O visual usa navy profundo, branco/cinza frio, verde para normalidade, âmbar pa
 
 ## Próxima sequência de trabalho
 
-1. Integrar câmera e leitura real de QR.
-2. Evoluir a fila offline para IndexedDB e sincronização idempotente com Supabase.
-3. Implementar manutenção e auditoria completas.
-4. Configurar variáveis e publicar na Vercel.
-5. **Último passo antes da produção:** configurar SMTP próprio no Supabase, desativar o `mailer_autoconfirm` usado durante o desenvolvimento, reativar a confirmação de e-mail e validar cadastro, confirmação e recuperação de senha. O provedor padrão do Supabase não deve ser usado em produção por causa do limite reduzido de envios.
+1. Evoluir a fila offline para IndexedDB e sincronização idempotente com Supabase.
+2. Integrar câmera e leitura real de QR.
+3. Configurar variáveis e publicar na Vercel.
+4. **Último passo antes da produção:** configurar SMTP próprio no Supabase, desativar o `mailer_autoconfirm` usado durante o desenvolvimento, reativar a confirmação de e-mail e validar cadastro, confirmação e recuperação de senha. O provedor padrão do Supabase não deve ser usado em produção por causa do limite reduzido de envios.
 
 ## Fora do MVP inicial
 
