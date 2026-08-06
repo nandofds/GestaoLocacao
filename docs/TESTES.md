@@ -126,7 +126,17 @@ Use este documento como checklist manual após mudanças importantes ou antes de
 - [ ] Testar `SEM_REPARO` em um item próprio para teste.
 - [ ] Confirmar baixa definitiva e histórico preservado.
 
-## 13. Responsividade e regressão
+## 13. Relatórios e configurações
+
+- [ ] Filtrar relatórios por período e conferir os eventos retornados.
+- [ ] Confirmar que eventos cancelados não entram nos indicadores financeiros.
+- [ ] Reconciliar valor dos eventos, custos adicionais, manutenção e resultado estimado.
+- [ ] Alternar a empresa ativa e confirmar isolamento dos dados do relatório.
+- [ ] Abrir Configurações como proprietário e alterar o nome da empresa.
+- [ ] Abrir Configurações como gestor ou operador e confirmar bloqueio da edição.
+- [ ] Confirmar que o novo nome aparece no cabeçalho após atualizar a sessão.
+
+## 14. Responsividade e regressão
 
 - [ ] Validar desktop em aproximadamente `1440×1024`.
 - [ ] Validar celular em aproximadamente `390×844`.
@@ -137,8 +147,11 @@ Use este documento como checklist manual após mudanças importantes ou antes de
 ## Pendências para testes futuros
 
 - [ ] Agenda real diária, semanal e mensal.
-- [ ] Dashboard totalmente real e navegável.
-- [ ] Operações offline com IndexedDB e sincronização idempotente.
+- [ ] Desconectar a rede, registrar retorno e confirmar persistência no IndexedDB.
+- [ ] Marcar dano após uma leitura offline e confirmar que ele substitui o retorno comum na fila.
+- [ ] Reconectar e confirmar sincronização e remoção somente das operações aceitas.
+- [ ] Simular falha de sincronização e confirmar preservação da operação com nova tentativa.
+- [ ] Tentar trocar de empresa com fila pendente e confirmar o bloqueio.
 - [ ] Leitura por câmera.
 - [ ] Deploy na Vercel.
 - [ ] SMTP, confirmação de e-mail e recuperação de senha.

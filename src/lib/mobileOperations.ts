@@ -1,0 +1,5 @@
+import { listEvents, type RentalEvent } from './events'
+import { supabase } from './supabase'
+export type MobileAction='departure'|'collection'|'return'|'complete'
+export type MobileEvent=RentalEvent&{mobileAction:MobileAction}
+export async function listMobileEvents():Promise<MobileEvent[]>{if(!supabase)throw new Error('Supabase não configurado.');const[events,movements]=await Promise.all([listEvents(),supabase.from('movements').select('event_id,movement_type')]);if(movements.error)throw new Error(movements.error.message);const types=new Map<string,Set<string>>();for(const movement of movements.data??[]){const set=types.get(movement.event_id)??new Set<string>();set.add(movement.movement_type);types.set(movement.event_id,set)}return events.filter(event=>['CONFIRMADO','EM_ANDAMENTO'].includes(event.status)).map(event=>{const state=types.get(event.id);const mobileAction:MobileAction=state?.has('RETORNO')?'complete':state?.has('COLETA_RETORNO')?'return':state?.has('SAIDA')?'collection':'departure';return{...event,mobileAction}}).sort((a,b)=>new Date(a.assembly_at).getTime()-new Date(b.assembly_at).getTime())}

@@ -5,12 +5,12 @@ import type { RentalEvent } from '../lib/events'
 
 const message = (error: unknown) => error instanceof Error ? error.message : 'Não foi possível concluir a operação.'
 
-export function DeparturePage() {
-  const [events, setEvents] = useState<RentalEvent[]>([]); const [eventId, setEventId] = useState(''); const [details, setDetails] = useState<DepartureDetails>()
+export function DeparturePage({ initialEventId = '' }: { initialEventId?: string }) {
+  const [events, setEvents] = useState<RentalEvent[]>([]); const [eventId, setEventId] = useState(initialEventId); const [details, setDetails] = useState<DepartureDetails>()
   const [collaboratorId, setCollaboratorId] = useState(''); const [receiverName, setReceiverName] = useState(''); const [notes, setNotes] = useState(''); const [loading, setLoading] = useState(true); const [saving, setSaving] = useState(false); const [error, setError] = useState(''); const [success, setSuccess] = useState('')
   const selectedEvent = events.find((event) => event.id === eventId); const checkedCount = details?.items.filter((item) => item.checked).length ?? 0; const total = details?.items.length ?? 0; const ready = total > 0 && checkedCount === total && Boolean(collaboratorId) && !details?.movement
 
-  useEffect(() => { let active = true; void listDepartureEvents().then((data) => { if (active) { setEvents(data); setEventId(data[0]?.id ?? '') } }).catch((reason: unknown) => { if (active) setError(message(reason)) }).finally(() => { if (active) setLoading(false) }); return () => { active = false } }, [])
+  useEffect(() => { let active = true; void listDepartureEvents().then((data) => { if (active) { setEvents(data); setEventId((current) => current || data[0]?.id || '') } }).catch((reason: unknown) => { if (active) setError(message(reason)) }).finally(() => { if (active) setLoading(false) }); return () => { active = false } }, [])
   useEffect(() => { if (!selectedEvent) { setDetails(undefined); return }; let active = true; setLoading(true); setError(''); setSuccess(''); void loadDepartureDetails(selectedEvent).then((data) => { if (active) { setDetails(data); setCollaboratorId(data.collaborators[0]?.id ?? '') } }).catch((reason: unknown) => { if (active) setError(message(reason)) }).finally(() => { if (active) setLoading(false) }); return () => { active = false } }, [selectedEvent])
   async function submit(event: FormEvent) { event.preventDefault(); if (!selectedEvent || !ready) return; setSaving(true); setError(''); try { await finalizeDeparture(selectedEvent.id, collaboratorId, receiverName, notes); setDetails(await loadDepartureDetails(selectedEvent)); setSuccess('Saída registrada com sucesso. Os equipamentos agora estão em uso.') } catch (reason) { setError(message(reason)) } finally { setSaving(false) } }
 

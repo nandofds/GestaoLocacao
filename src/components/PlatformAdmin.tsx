@@ -1,6 +1,7 @@
 import { type FormEvent, useEffect, useState } from 'react'
 import { Building2, Plus } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import { pendingQueueCount } from '../lib/offlineQueue'
 
 type Organization = { id: string; name: string }
 
@@ -28,6 +29,7 @@ export function PlatformAdmin() {
   }, [])
 
   async function switchOrganization(id: string) {
+    if (await pendingQueueCount() > 0) { setMessage('Sincronize as operações offline pendentes antes de trocar de empresa.'); return }
     if (!supabase || !id || id === activeId) return
     setMessage('Alternando empresa...')
     const { error } = await supabase.rpc('switch_organization', { target_organization_id: id })
