@@ -9,7 +9,7 @@ export type SeparationItem = {
 type ReservationRow = { id: string; item_id: string; items: { internal_code: string; qr_value: string; description: string; categories: { name: string } | null } }
 type CheckRow = { id: string; event_item_id: string; checked_at: string }
 
-function requireSupabase() { if (!supabase) throw new Error('Supabase não configurado.'); return supabase }
+function requireSupabase() { if (!supabase) throw new Error('Serviço não configurado.'); return supabase }
 
 export async function listSeparationEvents(): Promise<RentalEvent[]> {
   const events = await listEvents()

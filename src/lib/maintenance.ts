@@ -8,7 +8,7 @@ export type MaintenanceHistory = { id: string; from_status: MaintenanceStatus | 
 export type WorkOrder = { id: string; organization_id: string; organization_name: string; item_id: string; item_code: string; item_description: string; origin_event_name: string | null; defect_description: string; urgency: MaintenanceUrgency; opened_at: string; expected_completion_at: string | null; result: string | null; status: MaintenanceStatus; tested_and_released_at: string | null; responsible_id: string | null; responsible_name: string | null; total_cost: number; technical_notes: string | null; updated_at: string; history: MaintenanceHistory[] }
 export type WorkOrderInput = { status: MaintenanceStatus; urgency: MaintenanceUrgency; responsible_id: string | null; total_cost: number; result: string; technical_notes: string; release_condition: ReleaseCondition }
 type OrderRow = Omit<WorkOrder, 'organization_name' | 'item_code' | 'item_description' | 'origin_event_name' | 'responsible_name' | 'history'> & { organizations: { name: string } | null; items: { internal_code: string; description: string } | null; events: { name: string } | null; collaborators: { name: string } | null }
-function requireSupabase() { if (!supabase) throw new Error('Supabase não configurado.'); return supabase }
+function requireSupabase() { if (!supabase) throw new Error('Serviço não configurado.'); return supabase }
 
 export async function loadMaintenance() {
   const [ordersResult, historyResult, collaborators] = await Promise.all([

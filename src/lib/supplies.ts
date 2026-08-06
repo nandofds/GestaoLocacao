@@ -17,7 +17,7 @@ export type Supply = {
 export type SupplyInput = Omit<Supply, 'id' | 'organization_id' | 'organization_name' | 'category_name'>
 
 function requireSupabase() {
-  if (!supabase) throw new Error('Supabase não configurado.')
+  if (!supabase) throw new Error('Serviço não configurado.')
   return supabase
 }
 

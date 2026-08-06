@@ -28,7 +28,7 @@ export type DashboardSnapshot = {
 }
 
 export async function loadDashboard(): Promise<DashboardSnapshot> {
-  if (!supabase) throw new Error('Supabase não configurado.')
+  if (!supabase) throw new Error('Serviço não configurado.')
 
   const now = new Date()
   const dayStart = new Date(now); dayStart.setHours(0, 0, 0, 0)

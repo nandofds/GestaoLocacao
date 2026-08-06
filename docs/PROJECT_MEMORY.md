@@ -1,4 +1,4 @@
-# Memória do projeto — Lume
+# Memória do projeto — BackRoadie
 
 Atualizado em: 4 de agosto de 2026.
 

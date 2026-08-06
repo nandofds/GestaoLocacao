@@ -19,7 +19,7 @@ export type Collaborator = {
 export type CollaboratorInput = Omit<Collaborator, 'id' | 'organization_id' | 'organization_name'>
 
 function requireSupabase() {
-  if (!supabase) throw new Error('Supabase não configurado.')
+  if (!supabase) throw new Error('Serviço não configurado.')
   return supabase
 }
 

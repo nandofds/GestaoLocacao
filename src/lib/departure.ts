@@ -7,7 +7,7 @@ export type DepartureItem = { item_id: string; internal_code: string; descriptio
 export type DepartureDetails = { items: DepartureItem[]; collaborators: Collaborator[]; movement: { id: string; occurred_at: string; receiver_name: string | null; delivered_by: string | null } | null }
 type ReservationRow = { item_id: string; items: { internal_code: string; description: string; condition: string } }
 
-function requireSupabase() { if (!supabase) throw new Error('Supabase não configurado.'); return supabase }
+function requireSupabase() { if (!supabase) throw new Error('Serviço não configurado.'); return supabase }
 export async function listDepartureEvents(): Promise<RentalEvent[]> { return listSeparationEvents() }
 
 export async function loadDepartureDetails(event: RentalEvent): Promise<DepartureDetails> {

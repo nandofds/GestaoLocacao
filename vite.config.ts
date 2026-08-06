@@ -8,17 +8,18 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg'],
+      includeAssets: ['backroadie-logo.png', 'backroadie-icon.png'],
       manifest: {
-        name: 'Lume Gestão de Eventos',
-        short_name: 'Lume',
+        name: 'BackRoadie Gestão de Eventos',
+        short_name: 'BackRoadie',
         description: 'Operação de locação de equipamentos para eventos',
         theme_color: '#071a36',
         background_color: '#f6f8fb',
         display: 'standalone',
         start_url: '/',
         icons: [
-          { src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }
+          { src: '/backroadie-icon.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: '/backroadie-icon.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
         ]
       },
       workbox: {

@@ -23,7 +23,7 @@ async function transaction<T>(mode: IDBTransactionMode, action: (store: IDBObjec
 }
 
 async function context() {
-  if (!supabase) throw new Error('Supabase não configurado.')
+  if (!supabase) throw new Error('Serviço não configurado.')
   const [{ data: auth, error: authError }, organization] = await Promise.all([supabase.auth.getSession(), supabase.rpc('current_organization_id')])
   const userId = auth.session?.user.id
   if (authError || !userId) throw new Error('Sessão inválida para operação offline.')

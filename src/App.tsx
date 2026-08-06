@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
-  AlertTriangle, ArrowDownToLine, ArrowLeft, ArrowRight, Boxes, CalendarDays,
+  AlertTriangle, ArrowDownToLine, ArrowLeft, ArrowRight, Boxes, CalendarDays, CalendarPlus,
   Check, ChevronRight, CircleUserRound, ClipboardCheck, Clock3, Cloud,
   CloudOff, FolderKanban, Gauge, Headphones, LayoutDashboard, LogOut,
   Menu, PackageCheck, PackageOpen, QrCode, RotateCcw, Search, Settings,
-  ShieldCheck, UsersRound, Wrench,
+  ShieldCheck, UserPlus, UsersRound, Wrench,
 } from 'lucide-react'
 import { loadDashboard, type DashboardSnapshot } from './lib/dashboard'
 import { enqueue, migrateLegacyQueue, pendingQueueCount, syncQueue } from './lib/offlineQueue'
@@ -28,8 +28,9 @@ import { listMobileEvents, type MobileAction, type MobileEvent } from './lib/mob
 import { QrCameraScanner } from './components/QrCameraScanner'
 import { listEvents, type RentalEvent } from './lib/events'
 import { loadReturnDetails, scanReturnItem, type ReturnDetails } from './lib/returns'
+import { MobileAgenda, MobileClientCreate, MobileEventWizard } from './components/MobilePlanning'
 
-type View = 'dashboard' | 'operation' | 'departure' | 'collection' | 'return' | 'events'
+type View = 'dashboard' | 'operation' | 'departure' | 'collection' | 'return' | 'events' | 'agenda' | 'new-event' | 'new-client'
 type DesktopSection = 'Dashboard' | 'Agenda' | 'Eventos' | 'Clientes' | 'Equipamentos' | 'Estoque' | 'Separação' | 'Saída' | 'Coleta no evento' | 'Retorno e conferência' | 'Manutenção' | 'Colaboradores' | 'Relatórios' | 'Configurações'
 type Tone = 'danger' | 'warning' | 'success' | 'info' | 'neutral'
 
@@ -47,7 +48,7 @@ function Status({ tone, children }: { tone: Tone; children: React.ReactNode }) {
 
 function Sidebar({ collapsed, active, onSelect, onToggle }: { collapsed: boolean; active: DesktopSection; onSelect: (section: DesktopSection) => void; onToggle: () => void }) {
   return <aside className={`sidebar ${collapsed ? 'sidebar--collapsed' : ''}`}>
-    <div className="brand"><span className="brand-mark">L</span><strong>Lume</strong></div>
+    <div className="brand"><img className="brand-logo" src="/backroadie-logo.png" alt="BackRoadie" /><img className="brand-icon" src="/backroadie-icon.png" alt="" /></div>
     <nav aria-label="Navegação principal">
       {nav.map(([label, Icon]) => (
         <button className={label === active ? 'nav-item nav-item--active' : 'nav-item'} key={label} title={label} onClick={() => onSelect(label)}>
@@ -113,7 +114,7 @@ function Dashboard({ onNavigate }: { onNavigate: (section: DesktopSection) => vo
           <span className={`stock-dot stock-dot--${item.tone}`} /><span className="stock-name">{item.label}</span>
           <strong>{item.value.toLocaleString('pt-BR')}</strong><div className="bar"><i className={`bar--${item.tone}`} style={{ width: `${item.percent}%` }} /></div><small>{item.percent.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%</small>
         </div>)}</div>
-        <div className="reconcile"><ShieldCheck size={18} /><span><strong>{itemCount.toLocaleString('pt-BR')} itens cadastrados</strong><small>Inventário conectado ao Supabase</small></span></div>
+        <div className="reconcile"><ShieldCheck size={18} /><span><strong>{itemCount.toLocaleString('pt-BR')} itens cadastrados</strong><small>Inventário sincronizado</small></span></div>
       </section>
     </div>
     <section className="panel operations"><div className="section-heading"><h2>Próximas operações</h2><button onClick={() => onNavigate('Agenda')}>Ver todas <ArrowRight size={15} /></button></div>
@@ -125,7 +126,7 @@ function Dashboard({ onNavigate }: { onNavigate: (section: DesktopSection) => vo
 
 function MobileHeader({ title, back, online }: { title?: string; back?: () => void; online?: boolean }) {
   return <header className="mobile-header">
-    {back ? <button aria-label="Voltar" onClick={back}><ArrowLeft /></button> : <div className="mobile-brand"><strong>Lume</strong><span>Operação</span></div>}
+    {back ? <button aria-label="Voltar" onClick={back}><ArrowLeft /></button> : <div className="mobile-brand"><img src="/backroadie-logo.png" alt="BackRoadie" /><span>Operação</span></div>}
     {title ? <h1>{title}</h1> : null}
     {online !== undefined ? <span className={online ? 'sync sync--ok' : 'sync'}>{online ? <Cloud /> : <CloudOff />}<span>{online ? 'Online' : 'Offline'}<small>{online ? 'tudo sincronizado' : 'salvando no aparelho'}</small></span></span> : <button aria-label="Opções"><Menu /></button>}
   </header>
@@ -136,11 +137,16 @@ function OperationHome({ setView, online }: { setView: (v: View) => void; online
   const [nextEvent, setNextEvent] = useState<RentalEvent>()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  useEffect(() => { let active = true; async function load() { if (!supabase) throw new Error('Supabase não configurado.'); const [{ data: auth }, events] = await Promise.all([supabase.auth.getUser(), listEvents()]); const profile = auth.user ? await supabase.from('profiles').select('display_name').eq('id', auth.user.id).single() : null; if (!active) return; setName(profile?.data?.display_name?.trim() || auth.user?.email?.split('@')[0] || 'usuário'); const now = Date.now(); setNextEvent(events.filter((event) => ['CONFIRMADO', 'EM_ANDAMENTO'].includes(event.status) && new Date(event.disassembly_at).getTime() >= now).sort((a, b) => new Date(a.assembly_at).getTime() - new Date(b.assembly_at).getTime())[0]) } void load().catch((reason: unknown) => { if (active) setError(reason instanceof Error ? reason.message : 'Não foi possível carregar a operação.') }).finally(() => { if (active) setLoading(false) }); return () => { active = false } }, [])
+  useEffect(() => { let active = true; async function load() { if (!supabase) throw new Error('Serviço não configurado.'); const [{ data: auth }, events] = await Promise.all([supabase.auth.getUser(), listEvents()]); const profile = auth.user ? await supabase.from('profiles').select('display_name').eq('id', auth.user.id).single() : null; if (!active) return; setName(profile?.data?.display_name?.trim() || auth.user?.email?.split('@')[0] || 'usuário'); const now = Date.now(); setNextEvent(events.filter((event) => ['CONFIRMADO', 'EM_ANDAMENTO'].includes(event.status) && new Date(event.disassembly_at).getTime() >= now).sort((a, b) => new Date(a.assembly_at).getTime() - new Date(b.assembly_at).getTime())[0]) } void load().catch((reason: unknown) => { if (active) setError(reason instanceof Error ? reason.message : 'Não foi possível carregar a operação.') }).finally(() => { if (active) setLoading(false) }); return () => { active = false } }, [])
   return <div className="mobile-screen"><MobileHeader online={online} />
     <div className="greeting"><h1>{loading ? 'Carregando…' : `Olá, ${name}!`}</h1><p>Vamos fazer um ótimo evento.</p></div>{error ? <div className="data-error" role="alert">{error}</div> : null}
     <div className="operation-actions">
       <button className="operation-action operation-action--navy" onClick={() => setView('events')}><QrCode /><span>Selecionar evento</span><ChevronRight /></button>
+      <div className="operation-shortcuts">
+        <button onClick={() => setView('agenda')}><CalendarDays /><span>Agenda</span></button>
+        <button onClick={() => setView('new-event')}><CalendarPlus /><span>Novo evento</span></button>
+        <button onClick={() => setView('new-client')}><UserPlus /><span>Novo cliente</span></button>
+      </div>
     </div>
     {nextEvent ? <button className="next-task" onClick={() => setView('events')}><small>Próximo evento</small><strong>{nextEvent.name}</strong><span><Clock3 /> {new Date(nextEvent.assembly_at).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}</span><span><CalendarDays /> {nextEvent.venue || nextEvent.address || 'Local não informado'}</span><i><ChevronRight /></i></button> : !loading ? <div className="next-task"><small>Próximo evento</small><strong>Nenhum evento confirmado</strong></div> : null}
     <button className="mobile-sign-out" onClick={() => void supabase?.auth.signOut()}>Sair da conta</button>
@@ -207,6 +213,9 @@ function App() {
     if (view === 'departure' && mobileEvent) return <div className="mobile-screen"><MobileHeader title="Saída" back={() => setView('events')} /><DeparturePage initialEventId={mobileEvent.id} /></div>
     if (view === 'collection' && mobileEvent) return <div className="mobile-screen"><MobileHeader title="Coleta no evento" back={() => setView('events')} /><ReturnCollectionPage initialEventId={mobileEvent.id} /></div>
     if (view === 'events') return <MyEvents setView={setView} onSelect={(event, action) => { if (action === 'complete') return; setMobileEvent(event); setView(action) }} />
+    if (view === 'agenda') return <MobileAgenda onBack={() => setView('operation')} />
+    if (view === 'new-event') return <MobileEventWizard onBack={() => setView('operation')} onSaved={() => setView('agenda')} />
+    if (view === 'new-client') return <MobileClientCreate onBack={() => setView('operation')} onCreated={() => setView('new-event')} />
     return <OperationHome setView={setView} online={online} />
   }, [view, online, mobileEvent])
 

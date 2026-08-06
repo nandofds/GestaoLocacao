@@ -12,7 +12,7 @@ type ReservationRow = {
   items: Omit<EquipmentItem, 'organization_name' | 'category_name'> & { organizations: { name: string } | null; categories: { name: string } | null }
 }
 
-function requireSupabase() { if (!supabase) throw new Error('Supabase não configurado.'); return supabase }
+function requireSupabase() { if (!supabase) throw new Error('Serviço não configurado.'); return supabase }
 function intervalHours(interval: string) { const days = Number(interval.match(/(\d+) day/)?.[1] ?? 0); const hours = Number(interval.match(/(\d+):/)?.[1] ?? interval.match(/(\d+) hour/)?.[1] ?? 0); return days * 24 + hours }
 
 export async function loadReservationManager(organizationId: string) {

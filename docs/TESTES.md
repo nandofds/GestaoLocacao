@@ -1,4 +1,4 @@
-# Roteiro de testes — Lume
+# Roteiro de testes — BackRoadie
 
 Use este documento como checklist manual após mudanças importantes ou antes de uma publicação. Execute os testes com pelo menos duas empresas e um usuário comum, além do superusuário.
 

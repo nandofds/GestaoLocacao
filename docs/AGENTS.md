@@ -1,4 +1,4 @@
-# Instruções do projeto Lume
+# Instruções do projeto BackRoadie
 
 Antes de alterar este repositório, leia `docs/PROJECT_MEMORY.md` e preserve as regras rígidas do domínio registradas nele.
 
@@ -21,4 +21,3 @@ Antes de alterar este repositório, leia `docs/PROJECT_MEMORY.md` e preserve as 
 - `src/lib/supabase.ts`: cliente opcional do Supabase.
 - `supabase/migrations/`: modelo inicial do banco.
 - `design/`: conceitos visuais aprovados.
-

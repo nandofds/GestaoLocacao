@@ -4,7 +4,7 @@ export type ReportEvent = { id: string; name: string; client: string; startsAt: 
 export type ReportSnapshot = { events: ReportEvent[]; maintenanceCost: number; maintenanceCount: number; itemCount: number }
 
 export async function loadReport(start: string, end: string): Promise<ReportSnapshot> {
-  if (!supabase) throw new Error('Supabase não configurado.')
+  if (!supabase) throw new Error('Serviço não configurado.')
   const endExclusive = new Date(`${end}T00:00:00`); endExclusive.setDate(endExclusive.getDate() + 1)
   const [eventsResult, maintenanceResult, itemsResult] = await Promise.all([
     supabase.from('events').select('id,name,starts_at,status,value,additional_costs,clients!events_tenant_client_fk(name)').gte('starts_at', `${start}T00:00:00`).lt('starts_at', endExclusive.toISOString()).order('starts_at', { ascending: false }),

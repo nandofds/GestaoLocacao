@@ -12,7 +12,7 @@ export type RentalEvent = {
 export type EventInput = Omit<RentalEvent, 'id' | 'organization_id' | 'organization_name' | 'client_name'>
 type EventRow = Omit<RentalEvent, 'organization_name' | 'client_name'> & { clients: { name: string } | null; organizations: { name: string } | null }
 
-function requireSupabase() { if (!supabase) throw new Error('Supabase não configurado.'); return supabase }
+function requireSupabase() { if (!supabase) throw new Error('Serviço não configurado.'); return supabase }
 function mapEvent(row: EventRow): RentalEvent {
   const { clients, organizations, ...event } = row
   return { ...event, value: Number(event.value ?? 0), additional_costs: Number(event.additional_costs ?? 0), client_name: clients?.name ?? 'Cliente não identificado', organization_name: organizations?.name ?? 'Empresa não identificada' }

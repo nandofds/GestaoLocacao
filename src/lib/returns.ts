@@ -7,7 +7,7 @@ export type ReturnItem = { item_id: string; internal_code: string; qr_value: str
 export type ReturnDetails = { items: ReturnItem[]; collaborators: Collaborator[]; movement: { id: string; occurred_at: string; received_by: string | null } | null }
 type DepartureRow = { item_id: string; condition: string; items: { internal_code: string; qr_value: string; description: string } }
 type CheckRow = { id: string; item_id: string; condition: ReturnCondition; defect_description: string | null; checked_at: string }
-function requireSupabase() { if (!supabase) throw new Error('Supabase não configurado.'); return supabase }
+function requireSupabase() { if (!supabase) throw new Error('Serviço não configurado.'); return supabase }
 
 export async function listReturnEvents(): Promise<RentalEvent[]> {
   const [events, movementsResult] = await Promise.all([listEvents(), requireSupabase().from('movements').select('event_id,movement_type')])

@@ -26,7 +26,7 @@ function mapClient(row: ClientRow): Client {
 }
 
 function requireSupabase() {
-  if (!supabase) throw new Error('Supabase não configurado.')
+  if (!supabase) throw new Error('Serviço não configurado.')
   return supabase
 }
 

@@ -1,4 +1,4 @@
-# Lume — Gestão de locação para eventos
+# BackRoadie — Gestão de locação para eventos
 
 Aplicação React/TypeScript com duas superfícies separadas:
 
